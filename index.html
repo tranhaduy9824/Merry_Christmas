@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            background-color: #b30d1e;
+        }
+
+        .falling-snowflake {
+            font-size: 8px;
+            color: white;
+            position: absolute;
+        }
+
+        #content {
+            position: fixed; 
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;    
+        }
+
+        #content .box-content {
+            position: absolute;
+            width: 300px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: shake 2s infinite;
+            cursor: pointer;
+        }
+
+        @keyframes shake {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            20% { transform: translate(-50%, -50%) rotate(-10deg); }
+            40% { transform: translate(-50%, -50%) rotate(10deg); }
+            60% { transform: translate(-50%, -50%) rotate(-10deg); }
+            80% { transform: translate(-50%, -50%) rotate(10deg); }
+            100% { transform: translate(-50%, -50%) rotate(0deg); }
+        }
+
+        #content .box-content img {
+            width: 100%;
+        }
+
+        #content .box-content .nap {
+            transform: translateY(0);
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+        }
+
+        #content .box-content .hop {
+            margin-top: -25px;
+            transform: translateY(0);
+            transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+        }
+
+        #content .box-content.open .nap {
+            transform: translateY(-100px);
+            opacity: 0;
+        }
+
+        #content .box-content.open .hop {
+            transform: translateY(100px);
+            opacity: 0;
+        }
+
+        #content .box-christmas {
+            position: relative;
+            text-align: center;
+            font-size: 200px;
+            font-family: "Brush Script MT", cursive;
+            color: white;
+            text-shadow: 6px 6px 10px rgba(255, 255, 255, 0.5);
+            display: none;
+        }
+
+        #content .box-christmas.open {
+            display: block;
+        }
+
+        #content .box-christmas .bang {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+        }
+
+        #content .box-christmas .box-caythong {
+            position: absolute;
+            bottom: 90px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;    
+        }
+
+        #content .box-christmas .nguoituyet {
+            width: 100px;
+            margin-bottom: 10px;
+        }   
+
+        #content .box-christmas .santa {
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="content">
+        <div class="box-content">
+            <img src="./img/nắp.png" alt="" class="nap">
+            <img src="./img/hộp.png" alt="" class="hop">
+        </div>
+        <div class="box-christmas">
+            <img src="./img/băng.png" alt="" class="bang">
+            <p>Merry Christmas</p>
+            <img src="./img/santaclausreverse.gif" alt="" class="santa">
+            <br>
+            <div class="box-caythong">
+                <img src="./img/cây thông.png" alt="" class="caythong">
+                <img src="./img/cây thông.png" alt="" class="caythong">
+                <img src="./img/cây thông.png" alt="" class="caythong">
+                <img src="./img/cây thông.png" alt="" class="caythong">
+            </div>
+            <img src="./img/người tuyết.png" alt="" class="nguoituyet">
+        </div>
+    </div>
+
+    <script>
+        var container = document.querySelector('#container');
+        var containerWidth = container.offsetWidth;
+        var containerHeight = container.offsetHeight;
+
+        function createFallingSnowflake() {
+            var snowflake = document.createElement('i');
+            snowflake.className = 'far fa-snowflake falling-snowflake';
+            snowflake.style.left = Math.random() * containerWidth + 'px';
+            snowflake.style.top = Math.random() * containerHeight - 150 + 'px'; 
+            container.appendChild(snowflake);
+
+            var fallSpeed = Math.random() * 0.25 + 0.25;
+
+            function animate() {
+                var currentTop = parseFloat(snowflake.style.top);
+                var newTop = currentTop + fallSpeed;
+                snowflake.style.top = newTop + 'px';
+
+                if (newTop > containerHeight) {
+                    container.removeChild(snowflake);
+                    createFallingSnowflake();
+                } else {
+                    requestAnimationFrame(animate);
+                }
+            }
+
+            animate();
+        }
+
+        for (var i = 0; i < 200; i++) {
+            createFallingSnowflake();
+        }
+
+        const boxContent = document.querySelector('.box-content');
+        const boxChrismas = document.querySelector('.box-christmas');
+        boxContent.addEventListener('click', function() {
+            boxContent.classList.add('open');
+            setTimeout(() => {
+                boxChrismas.classList.add('open');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
